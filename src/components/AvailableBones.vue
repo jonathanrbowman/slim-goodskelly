@@ -2,7 +2,6 @@
   <div>
     <v-text-field
       v-model="searchText"
-      solo
       hide-details
       dense
       placeholder="Search Available Bones"
@@ -26,7 +25,7 @@
           </v-btn>
         </v-col>
         <v-col cols="12">
-          <v-skeleton-loader :type="bone.value" />
+          <v-skeleton-loader :type="bone.value" boilerplate />
           <v-divider class="mt-4" />
         </v-col>
       </v-row>
@@ -74,5 +73,6 @@ export default {
 .bones {
   height: calc(100vh - 132px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

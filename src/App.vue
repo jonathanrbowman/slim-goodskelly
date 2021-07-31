@@ -25,7 +25,11 @@
           </v-btn-toggle>
           <v-divider class="my-4" />
           <div style="position: relative;">
-            <draggable v-model="selectedBones" animation="200">
+            <draggable
+              v-model="selectedBones"
+              animation="200"
+              handle=".skelly-drag"
+            >
               <transition-group>
                 <v-row
                   no-gutters
@@ -36,16 +40,17 @@
                   <v-col cols="3">
                     {{ bone.text }}
                     <br />
-                    <span class="text-caption">
+                    <span class="text-caption text--secondary">
                       Type String: {{ bone.value }}
                     </span>
                   </v-col>
 
-                  <v-col cols="6">
+                  <v-col cols="6" class="skelly-drag">
                     <v-skeleton-loader
                       :type="bone.value"
                       v-bind="skellyLoaderOptions"
                       class="px-4"
+                      style="cursor: grab !important;"
                     />
                   </v-col>
 
@@ -55,7 +60,12 @@
                       style="position: relative; top: 5px;"
                       dense
                     >
-                      <v-btn @click="updateBoneCount(i, false)" small icon>
+                      <v-btn
+                        @click="updateBoneCount(i, false)"
+                        small
+                        icon
+                        :disabled="bone.decrementDisabled"
+                      >
                         <v-icon>mdi-minus</v-icon>
                       </v-btn>
                       <v-btn @click="updateBoneCount(i)" small icon>
@@ -70,7 +80,7 @@
                       class="ml-3"
                       small
                     >
-                      <v-icon>mdi-delete</v-icon>
+                      <v-icon small>mdi-close</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -126,7 +136,7 @@ export default {
 
       Object.entries(this.skellyLoaderOptions).forEach(([key, value]) => {
         if (value !== skellyLoaderDefaults[key]) {
-          options += ` :${key}="${value}"`;
+          options += ` ${key}`;
         }
       });
 
@@ -153,12 +163,14 @@ export default {
         ? parseInt(currentCount) + 1
         : parseInt(currentCount) - 1;
 
-      if (newCount <= 0) {
+      if (newCount <= 1) {
         bone.value = baseValue;
+        bone.decrementDisabled = true;
         return;
       }
 
       bone.value = `${baseValue}@${newCount}`;
+      bone.decrementDisabled = false;
     }
   }
 };
@@ -195,7 +207,8 @@ body,
 .bone-canvas {
   display: block;
   width: calc(100vw - 440px) !important;
-  max-width: 860px !important;
+  min-width: 670px;
+  max-width: 940px !important;
   position: absolute !important;
   top: 20px;
   left: 400px;
