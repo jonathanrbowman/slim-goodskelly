@@ -4,27 +4,29 @@
       <available-bones :selected-bones.sync="selectedBones" />
     </v-card>
 
-    <v-card class="pa-1 bone-canvas" flat>
-      <v-container fluid>
+    <div class="bone-canvas pb-5">
+      <v-card class="pb-1" flat>
         <div v-if="selectedBones.length">
-          <p class="text-body">
-            Drag to reorder bones. You can toggle a few of the options, too. The
-            minus and plus buttons let you increase or decrease the number of
-            instances of a bone type. When you're done, just copy the tag below
-            and off you go!
-          </p>
-          <span class="skelly-code">{{ skellyCode }}</span>
-          <v-btn-toggle multiple dense class="mt-2">
-            <v-btn
-              v-for="(option, i) in Object.keys(skellyLoaderOptions)"
-              v-model="skellyLoaderOptions[option]"
-              :key="i"
-            >
-              <span class="text-caption">{{ option }}</span>
-            </v-btn>
-          </v-btn-toggle>
-          <v-divider class="my-4" />
-          <div style="position: relative;">
+          <div class="pa-3">
+            <p class="text-body">
+              Drag to reorder bones. You can toggle a few of the options, too.
+              The minus and plus buttons let you increase or decrease the number
+              of instances of a bone type. When you're done, just copy the tag
+              below and off you go!
+            </p>
+            <span class="skelly-code">{{ skellyCode }}</span>
+            <v-btn-toggle multiple dense class="mt-2">
+              <v-btn
+                v-for="(option, i) in Object.keys(skellyLoaderOptions)"
+                v-model="skellyLoaderOptions[option]"
+                :key="i"
+              >
+                <span class="text-caption">{{ option }}</span>
+              </v-btn>
+            </v-btn-toggle>
+            <v-divider class="my-4" />
+          </div>
+          <div style="position: relative;" class="mb-4">
             <draggable
               v-model="selectedBones"
               animation="200"
@@ -36,12 +38,14 @@
                   v-for="(bone, i) in selectedBones"
                   :key="i"
                   style="position: relative; z-index: 2;"
+                  class="skelly-row px-3"
                 >
-                  <v-col cols="3">
+                  <v-col cols="4" style="line-height: 1;">
                     {{ bone.text }}
                     <br />
-                    <span class="text-caption text--secondary">
-                      Type String: {{ bone.value }}
+                    <v-icon small>mdi-code-tags</v-icon>
+                    <span class="text-caption text--secondary font-italic">
+                      {{ bone.value }}
                     </span>
                   </v-col>
 
@@ -54,7 +58,7 @@
                     />
                   </v-col>
 
-                  <v-col cols="3" align="right">
+                  <v-col cols="2" align="right">
                     <v-btn-toggle
                       active-class="nothing"
                       style="position: relative; top: 5px;"
@@ -97,11 +101,11 @@
           </div>
         </div>
 
-        <h6 v-else class="text-h6">
+        <h6 v-else class="text-h6 pa-3">
           Add a bone from the left to start building your Vuetify skelly loader
         </h6>
-      </v-container>
-    </v-card>
+      </v-card>
+    </div>
   </v-app>
 </template>
 
@@ -222,7 +226,7 @@ body,
   pointer-events: none;
   border-radius: 4px;
   bottom: -6px;
-  left: 0;
+  left: 17%;
   right: 0;
   margin: auto;
   z-index: 1;
